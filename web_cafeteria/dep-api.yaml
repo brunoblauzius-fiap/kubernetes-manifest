@@ -23,24 +23,60 @@ spec:
         ports:
         - containerPort: 3000
         env:
-          - name: MARIADB_HOST
-            value: svc-db
-          - name: MARIADB_USER
-            value: root
-          - name: MARIADB_PASS
-            value : qwe1234
-          - name: MARIADB_DATABASE
-            value: projeto-pedidos
-          - name: MARIADB_PORT
-            value: "3306"
-          - name: MP_URL
-            value: "https://api.mercadopago.com/v1/"
-          - name: MP_NOTIFICATION_URL
-            value: "https://google.com.br/"
-          - name: MP_CLIENT_ID
-            value: "TEST-427f8e8c-d6ca-4000-ab9b-95b3a2e554f7"
-          - name: MP_CLIENT_SECRET
-            value: "TEST-8926445123950097-011307-ee5dc50bf53c38a033fe5da4c9acc9c1__LD_LB__-209191463"
+        - name: MARIADB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: MARIADB_HOST
+              optional: false
+        - name: MARIADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: MARIADB_USER
+              optional: false
+        - name: MARIADB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: MARIADB_PASS
+              optional: false
+        - name: MARIADB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: MARIADB_DATABASE
+              optional: false
+        - name: MARIADB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: MARIADB_PORT
+              optional: false
+        - name: MP_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: MP_URL
+              optional: false
+        - name: MP_NOTIFICATION_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: MP_NOTIFICATION_URL
+              optional: false
+        - name: MP_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: MP_CLIENT_ID
+              optional: false
+        - name: MP_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: MP_CLIENT_SECRET
+              optional: false
         livenessProbe:
           httpGet:
             path: /
@@ -55,5 +91,5 @@ spec:
           initialDelaySeconds: 30
           failureThreshold: 3
           periodSeconds: 10
-          
+
 
