@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: dep-api-container
-        image: $(DOCKER_HUB_TAG)
+        image: bruno01/fiap01:latest
         resources:
           requests:
             cpu: 10m
