@@ -35,12 +35,16 @@ jobs:
         run: echo Hello, world! ${{ inputs.DOCKER_HUB_TAG }}
       
       - 
-        name: Login AWS
-        uses: aws-actions/configure-aws-credentials@v1  
+        name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}        
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: <sua-região-da-AWS>
+
+      - name: Deploy to AWS
+        run: |
+          # Coloque aqui os comandos para implantar sua aplicação na AWS
 
 
       # Runs a set of commands using the runners shell
