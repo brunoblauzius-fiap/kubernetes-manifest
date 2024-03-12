@@ -34,7 +34,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world! ${{ inputs.DOCKER_HUB_TAG }}
+        run: echo Hello, world! bruno01/fiap01:latest
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v2.0
@@ -64,7 +64,7 @@ jobs:
           REPOSITORY: clickmark
         run: |
           docker pull ${{ inputs.DOCKER_HUB_TAG }}
-          docker push $REGISTRY/${{ inputs.DOCKER_HUB_TAG }}
+          docker push $REGISTRY/bruno01/fiap01:latest
       
       - name: Update kube config
         run: aws eks update-kubeconfig --name clickmark
