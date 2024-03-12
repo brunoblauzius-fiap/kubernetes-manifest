@@ -64,7 +64,7 @@ jobs:
           REPOSITORY: clickmark
         run: |
           docker pull bruno01/fiap01:latest
-          docker push $REGISTRY/bruno01/fiap01:latest
+          docker push $REGISTRY/fiap01:latest
       
       - name: Update kube config
         run: aws eks update-kubeconfig --name clickmark
