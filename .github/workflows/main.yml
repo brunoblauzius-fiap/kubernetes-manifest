@@ -62,11 +62,10 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: clickmark
+          IMAGE: bruno01/fiap01:latest
         run: |
-          echo ${{ steps.login-ecr.outputs.registry }}
-          docker pull bruno01/fiap01:latest
-          docker images
-          # docker push $REGISTRY/fiap01:latest
+          docker pull $IMAGE
+          docker push $REGISTRY/$REPOSITORY/$IMAGE
       
       # - 
       #   name: Update kube config
