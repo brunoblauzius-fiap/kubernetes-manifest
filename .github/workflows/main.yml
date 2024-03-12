@@ -56,7 +56,12 @@ jobs:
         name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      
+      - 
+        name: PULL docker image
+        env:
+          IMAGE: bruno01/fiap01:latest
+        run: |
+          docker pull $IMAGE
       - 
         name: Build, tag, and push docker image to Amazon ECR
         env:
@@ -64,8 +69,8 @@ jobs:
           REPOSITORY: clickmark
           IMAGE: bruno01/fiap01:latest
         run: |
-          docker pull $IMAGE
-          docker push $REGISTRY/$REPOSITORY/fiap01:latest
+          docker tag $IMAGE $REGISTRY/$REPOSITORY:${{ github.ref_name}}_${{ github.run_number }}
+          docker push $REGISTRY/$REPOSITORY:${{ github.ref_name}}_${{ github.run_number }}
       
       # - 
       #   name: Update kube config
