@@ -65,7 +65,7 @@ jobs:
           IMAGE: bruno01/fiap01:latest
         run: |
           docker pull $IMAGE
-          docker push $REGISTRY/$REPOSITORY/$IMAGE
+          docker push $REGISTRY/$REPOSITORY/fiap01:latest
       
       # - 
       #   name: Update kube config
