@@ -63,7 +63,7 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: clickmark
         run: |
-          docker pull ${{ inputs.DOCKER_HUB_TAG }}
+          docker pull bruno01/fiap01:latest
           docker push $REGISTRY/bruno01/fiap01:latest
       
       - name: Update kube config
