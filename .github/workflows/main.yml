@@ -9,6 +9,16 @@ on:
         description: "Tag do projeto"
         type: string
         default: bruno01/fiap01:latest
+      AWS_ACCESS_KEY_ID:
+        description: "AWS key ID"
+        type: string
+      AWS_SECRET_ACCESS_KEY:
+        description: "AWS secret token"
+        type: string
+      AWS_REGION:
+        description: "region"
+        type: string
+        default: us-east-1
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "dev", "main" ]
@@ -47,9 +57,9 @@ jobs:
         name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:  ${{ vars.AWS_REGION }}
+          aws-access-key-id: ${{ inputs.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ inputs.AWS_SECRET_ACCESS_KEY }}
+          aws-region:  ${{ inputs.AWS_REGION }}
           
       - 
         name: Login to Amazon ECR
@@ -58,7 +68,7 @@ jobs:
       - 
         name: PULL docker image
         env:
-          IMAGE: bruno01/fiap01:latest
+          IMAGE: ${{ inputs.DOCKER_HUB_TAG }}
         run: |
           docker pull $IMAGE
       - 
