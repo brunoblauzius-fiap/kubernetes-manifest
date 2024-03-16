@@ -81,7 +81,6 @@ jobs:
       - 
         name: Deploy to EKS
         run: |
-          aws eks list-clusters
-          kubectl config view
-          kubectl get nodes
-          # kubectl apply -f .\web_cafeteria\
+          # kubectl config view
+          # kubectl get nodes
+          kubectl apply -f .\web_cafeteria\
