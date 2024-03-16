@@ -9,6 +9,8 @@ on:
         description: "Tag do projeto"
         type: string
         default: bruno01/fiap01:latest
+      AWS_SECRET_ACCESS_KEY: 
+        type: string
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "dev", "main" ]
@@ -47,7 +49,7 @@ jobs:
         name: ECHO Vars
         run: |
           echo "ID:" ${{ secrets.AWS_ACCESS_KEY_ID }}
-          echo "SECRET:" ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          echo "SECRET:" ${{ inputs.AWS_SECRET_ACCESS_KEY }}
           echo "REGION:" ${{ vars.AWS_REGION }}
           echo "TAG:" ${{ inputs.DOCKER_HUB_TAG }}
       
