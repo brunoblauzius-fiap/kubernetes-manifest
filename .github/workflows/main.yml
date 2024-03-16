@@ -9,10 +9,6 @@ on:
         description: "Tag do projeto"
         type: string
         default: bruno01/fiap01:latest
-      AWS_REGION:
-        description: "region"
-        type: string
-        default: us-east-1
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "dev", "main" ]
@@ -46,6 +42,14 @@ jobs:
         with:
           version: 'v1.24.0' # default is latest stable
         id: install
+
+      - 
+        name: ECHO Vars
+        run: |
+          echo ${{ secrets.AWS_ACCESS_KEY_ID }}
+          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          echo ${{ vars.AWS_REGION }}
+          echo ${{ inputs.DOCKER_HUB_TAG }}
       
       - 
         name: Configure AWS credentials
