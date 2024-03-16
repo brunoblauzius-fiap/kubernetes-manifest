@@ -46,10 +46,10 @@ jobs:
       - 
         name: ECHO Vars
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }}
-          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          echo ${{ vars.AWS_REGION }}
-          echo ${{ inputs.DOCKER_HUB_TAG }}
+          echo "ID:" ${{ secrets.AWS_ACCESS_KEY_ID }}
+          echo "SECRET:" ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          echo "REGION:" ${{ vars.AWS_REGION }}
+          echo "TAG:" ${{ inputs.DOCKER_HUB_TAG }}
       
       - 
         name: Configure AWS credentials
