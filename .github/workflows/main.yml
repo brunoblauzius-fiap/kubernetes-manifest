@@ -81,6 +81,5 @@ jobs:
       - 
         name: Deploy to EKS
         run: |
-          # kubectl config view
-          # kubectl get nodes
+          kubectl apply -f components.yaml
           kubectl apply -f web_cafeteria
