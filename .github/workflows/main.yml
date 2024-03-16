@@ -83,4 +83,4 @@ jobs:
         run: |
           # kubectl config view
           # kubectl get nodes
-          kubectl apply -f .\web_cafeteria\
+          kubectl apply -f web_cafeteria
