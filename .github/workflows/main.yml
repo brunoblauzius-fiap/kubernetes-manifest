@@ -9,9 +9,6 @@ on:
         description: "Tag do projeto"
         type: string
         default: bruno01/fiap01:latest
-    secrets:
-      AWS_SECRET_ACCESS_KEY:
-        required: true
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "dev", "main" ]
