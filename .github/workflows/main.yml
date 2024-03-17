@@ -78,4 +78,5 @@ jobs:
           IMAGE: ${{ steps.login-ecr.outputs.registry }}/producao:${{ github.event.inputs.docker_hub_tag }}
         run: |
           echo image $IMAGE
+          kubectl delete -f web_cafeteria/dep-api.yaml
           kubectl apply -f web_cafeteria
