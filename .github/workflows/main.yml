@@ -36,11 +36,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - 
-        name: Run a one-line script
-        run: echo Hello, world! bruno01/fiap01:latest
-
       - 
         name: Install kubectl
         uses: azure/setup-kubectl@v2.0
@@ -63,7 +58,7 @@ jobs:
       - 
         name: PULL docker image
         env:
-          IMAGE: ${{ inputs.DOCKER_HUB_TAG }}
+          IMAGE: bruno01/fiap01:${{ inputs.DOCKER_HUB_TAG }}
         run: |
           docker pull $IMAGE
       - 
@@ -71,10 +66,10 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: producao
-          IMAGE: ${{ inputs.DOCKER_HUB_TAG }}
+          IMAGE: bruno01/fiap01:${{ inputs.DOCKER_HUB_TAG }}
         run: |
-          docker tag $IMAGE $REGISTRY/$REPOSITORY:latest
-          docker push $REGISTRY/$REPOSITORY:latest
+          docker tag $IMAGE $REGISTRY/$REPOSITORY:${{ inputs.DOCKER_HUB_TAG }}
+          docker push $REGISTRY/$REPOSITORY:${{ inputs.DOCKER_HUB_TAG }}
       
       - 
         name: Update kube config
@@ -85,6 +80,8 @@ jobs:
         
       - 
         name: Deploy to EKS 
+        env:
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/$REPOSITORY:${{ inputs.DOCKER_HUB_TAG }}
         run: |
           ls -la
           kubectl apply -f web_cafeteria
