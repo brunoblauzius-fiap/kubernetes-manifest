@@ -3,25 +3,17 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  workflow_call:
-    inputs:
-      DOCKER_HUB_TAG:
-        description: "Tag do projeto"
-        type: string
-        default: bruno01/fiap01:latest
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "dev", "main" ]
-  pull_request:
     branches: [ "dev", "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      DOCKER_HUB_TAG:
-        description: "Tag para buscar no dockerhub"
-        type: string
-        default: bruno01/fiap01:latest
+      docker_hub_tag: # Define a variável de entrada "docker_hub_tag"
+        description: 'Tag para a imagem Docker no Docker Hub'
+        required: true
+        default: 'latest' # Valor padrão
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -58,7 +50,7 @@ jobs:
       - 
         name: PULL docker image
         env:
-          IMAGE: bruno01/fiap01:${{ inputs.DOCKER_HUB_TAG }}
+          IMAGE: bruno01/fiap01:${{ github.event.inputs.docker_hub_tag }}
         run: |
           docker pull $IMAGE
       - 
@@ -66,10 +58,10 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: producao
-          IMAGE: bruno01/fiap01:${{ inputs.DOCKER_HUB_TAG }}
+          IMAGE: bruno01/fiap01:${{ github.event.inputs.docker_hub_tag }}
         run: |
-          docker tag $IMAGE $REGISTRY/$REPOSITORY:${{ inputs.DOCKER_HUB_TAG }}
-          docker push $REGISTRY/$REPOSITORY:${{ inputs.DOCKER_HUB_TAG }}
+          docker tag $IMAGE $REGISTRY/$REPOSITORY:${{ github.event.inputs.docker_hub_tag }}
+          docker push $REGISTRY/$REPOSITORY:${{ github.event.inputs.docker_hub_tag }}
       
       - 
         name: Update kube config
@@ -81,7 +73,7 @@ jobs:
       - 
         name: Deploy to EKS 
         env:
-          IMAGE: ${{ steps.login-ecr.outputs.registry }}/producao:${{ inputs.DOCKER_HUB_TAG }}
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/producao:${{ github.event.inputs.docker_hub_tag }}
         run: |
           echo image $IMAGE
           kubectl apply -f web_cafeteria
