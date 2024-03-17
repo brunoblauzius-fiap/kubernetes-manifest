@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: dep-api-container
-        image: $IMAGE
+        image: ${IMAGE}
         resources:
           requests:
             cpu: 10m
