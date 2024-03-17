@@ -79,7 +79,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: producao
-          IMAGE: bruno01/fiap01:latest
+          IMAGE: ${{ inputs.DOCKER_HUB_TAG }}
         run: |
           docker tag $IMAGE $REGISTRY/$REPOSITORY:latest
           docker push $REGISTRY/$REPOSITORY:latest
