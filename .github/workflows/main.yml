@@ -19,7 +19,7 @@ on:
   workflow_dispatch:
     inputs:
       DOCKER_HUB_TAG:
-        description: "Tag do projeto"
+        description: "Tag para buscar no dockerhub"
         type: string
         default: bruno01/fiap01:latest
 
