@@ -60,7 +60,7 @@ jobs:
           REPOSITORY: producao
           IMAGE: bruno01/fiap01:${{ github.event.inputs.docker_hub_tag }}
         run: |
-          docker tag $IMAGE $REGISTRY/$REPOSITORY:${{ github.event.inputs.docker_hub_tag }}
+          docker tag $IMAGE $REGISTRY/$REPOSITORY:${{ github.event.inputs.docker_hub_tag }},latest
           docker push $REGISTRY/$REPOSITORY:${{ github.event.inputs.docker_hub_tag }},latest
       
       - 
