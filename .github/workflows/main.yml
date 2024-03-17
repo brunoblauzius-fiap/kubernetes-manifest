@@ -17,6 +17,11 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      DOCKER_HUB_TAG:
+        description: "Tag do projeto"
+        type: string
+        default: bruno01/fiap01:latest
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -47,7 +52,7 @@ jobs:
         name: ECHO Vars
         run: |
           echo "ID:" ${{ secrets.AWS_ACCESS_KEY_ID }}
-          echo "SECRET:" ${{ inputs.AWS_SECRET_ACCESS_KEY }}
+          echo "SECRET:" ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           echo "REGION:" ${{ vars.AWS_REGION }}
           echo "TAG:" ${{ inputs.DOCKER_HUB_TAG }}
       
