@@ -81,7 +81,7 @@ jobs:
       - 
         name: Deploy to EKS 
         env:
-          IMAGE: ${{ steps.login-ecr.outputs.registry }}/$REPOSITORY:${{ inputs.DOCKER_HUB_TAG }}
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/producao:${{ inputs.DOCKER_HUB_TAG }}
         run: |
           ls -la
           kubectl apply -f web_cafeteria
