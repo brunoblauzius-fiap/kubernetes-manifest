@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: dep-api-container
-        image: 308294614673.dkr.ecr.us-east-1.amazonaws.com/producao:latest
+        image: "${IMAGE}"
         resources:
           requests:
             cpu: 10m
