@@ -83,5 +83,5 @@ jobs:
         env:
           IMAGE: ${{ steps.login-ecr.outputs.registry }}/producao:${{ inputs.DOCKER_HUB_TAG }}
         run: |
-          ls -la
+          echo image $IMAGE
           kubectl apply -f web_cafeteria
