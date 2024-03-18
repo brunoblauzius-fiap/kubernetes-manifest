@@ -14,6 +14,10 @@ on:
         description: 'Tag para a imagem Docker no Docker Hub'
         required: true
         default: 'latest' # Valor padrão
+      manifest_name:
+        description: 'Nome no manifesto para deploy no EKS'
+        required: true
+        default: 'web_cafeteria' # Valor padrão
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -77,6 +81,6 @@ jobs:
         env:
           IMAGE: ${{ steps.login-ecr.outputs.registry }}/producao:${{ github.event.inputs.docker_hub_tag }}
         run: |
-          echo image $IMAGE
-          kubectl delete -f web_cafeteria/dep-api.yaml
-          kubectl apply -f web_cafeteria
+          kubectl delete -f ${{ github.event.inputs.manifest_name }}/dep-api.yaml
+          kubectl apply -f components.yaml
+          kubectl apply -f ${{ github.event.inputs.manifest_name }}
