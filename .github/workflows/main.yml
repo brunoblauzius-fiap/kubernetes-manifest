@@ -1,22 +1,23 @@
 # This is a basic workflow to help you get started with Actions
-
-name: CI
+name: CD deploy kubernets
 
 # Controls when the workflow will run
 on:
-  workflow_call:
-    inputs:
-      DOCKER_HUB_TAG:
-        description: "Tag do projeto"
-        type: string
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "dev", "main" ]
-  pull_request:
-    branches: [ "dev", "main" ]
+    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      docker_hub_tag: # Define a variável de entrada "docker_hub_tag"
+        description: 'Tag para a imagem Docker no Docker Hub'
+        required: true
+        default: 'latest' # Valor padrão
+      manifest_name:
+        description: 'Nome no manifesto para deploy no EKS'
+        required: true
+        default: 'web_cafeteria' # Valor padrão
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,10 +32,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world! ${{ inputs.DOCKER_HUB_TAG }}
-      
+      - 
+        name: Install kubectl
+        uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.24.0' # default is latest stable
+        id: install
+
       - 
         name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
@@ -42,26 +46,41 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region:  ${{ vars.AWS_REGION }}
-
-      - name: Deploy to AWS
-        run: |
-          # Coloque aqui os comandos para implantar sua aplicação na AWS
           
-      - name: Login to Amazon ECR
+      - 
+        name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      
-      - name: Build, tag, and push docker image to Amazon ECR
+      - 
+        name: PULL docker image
+        env:
+          IMAGE: bruno01/fiap01:${{ github.event.inputs.docker_hub_tag }}
+        run: |
+          docker pull $IMAGE
+      - 
+        name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: clickmark
+          REPOSITORY: producao
+          IMAGE: bruno01/fiap01:${{ github.event.inputs.docker_hub_tag }}
         run: |
-          docker pull ${{ inputs.DOCKER_HUB_TAG }}
-          docker push $REGISTRY/${{ inputs.DOCKER_HUB_TAG }}
+          docker tag $IMAGE $REGISTRY/$REPOSITORY:${{ github.event.inputs.docker_hub_tag }}
+          docker tag $IMAGE $REGISTRY/$REPOSITORY:latest
+          docker push $REGISTRY/$REPOSITORY:${{ github.event.inputs.docker_hub_tag }}
+          docker push $REGISTRY/$REPOSITORY:latest
       
-      - name: Update kube config
-        run: aws eks update-kubeconfig --name clickmark
+      - 
+        name: Update kube config
+        env:
+          CLUSTER: fiap-cluster
+          REGION:  ${{ vars.AWS_REGION }}
+        run: aws eks --region $REGION update-kubeconfig --name $CLUSTER
         
-      - name: Deploy to EKS
+      - 
+        name: Deploy to EKS 
+        env:
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/producao:${{ github.event.inputs.docker_hub_tag }}
         run: |
-          kubectl apply -f .\web_cafeteria\
+          kubectl delete -f ${{ github.event.inputs.manifest_name }}/dep-api.yaml
+          kubectl apply -f components.yaml
+          kubectl apply -f ${{ github.event.inputs.manifest_name }}
