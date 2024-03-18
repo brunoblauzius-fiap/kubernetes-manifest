@@ -81,6 +81,6 @@ jobs:
         env:
           IMAGE: ${{ steps.login-ecr.outputs.registry }}/producao:${{ github.event.inputs.docker_hub_tag }}
         run: |
-          # kubectl delete -f ${{ github.event.inputs.manifest_name }}/dep-api.yaml
+          kubectl delete -f ${{ github.event.inputs.manifest_name }}/dep-api.yaml
           kubectl apply -f components.yaml
           kubectl apply -f ${{ github.event.inputs.manifest_name }}
