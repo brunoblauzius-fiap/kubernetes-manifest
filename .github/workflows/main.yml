@@ -18,6 +18,10 @@ on:
         description: 'Nome no manifesto para deploy no EKS'
         required: true
         default: 'web_cafeteria' # Valor padrão
+      ecr_name:
+        description: 'Nome do ECR para buscar a imagem'
+        required: true
+        default: 'web_cafeteria' # Valor padrão
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -51,23 +55,6 @@ jobs:
         name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      - 
-        name: PULL docker image
-        env:
-          IMAGE: bruno01/fiap01:${{ github.event.inputs.docker_hub_tag }}
-        run: |
-          docker pull $IMAGE
-      - 
-        name: Build, tag, and push docker image to Amazon ECR
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: producao
-          IMAGE: bruno01/fiap01:${{ github.event.inputs.docker_hub_tag }}
-        run: |
-          docker tag $IMAGE $REGISTRY/$REPOSITORY:${{ github.event.inputs.docker_hub_tag }}
-          docker tag $IMAGE $REGISTRY/$REPOSITORY:latest
-          docker push $REGISTRY/$REPOSITORY:${{ github.event.inputs.docker_hub_tag }}
-          docker push $REGISTRY/$REPOSITORY:latest
       
       - 
         name: Update kube config
@@ -79,8 +66,8 @@ jobs:
       - 
         name: Deploy to EKS 
         env:
-          IMAGE: ${{ steps.login-ecr.outputs.registry }}/producao:${{ github.event.inputs.docker_hub_tag }}
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ github.event.inputs.ecr_name }}:${{ github.event.inputs.docker_hub_tag }}
         run: |
           kubectl apply -f components.yaml
-          sh "sed -i 's+308294614673.dkr.ecr.us-east-1.amazonaws.com/producao:.*+308294614673.dkr.ecr.us-east-1.amazonaws.com/producao:${{ github.event.inputs.docker_hub_tag }}+g' ${{ github.event.inputs.manifest_name }}/dep-api.yaml"
+          sh "sed -i 's+308294614673.dkr.ecr.us-east-1.amazonaws.com/${{ github.event.inputs.ecr_name }}:.*+308294614673.dkr.ecr.us-east-1.amazonaws.com/${{ github.event.inputs.ecr_name }}:${{ github.event.inputs.docker_hub_tag }}+g' ${{ github.event.inputs.manifest_name }}/dep-api.yaml"
           kubectl apply -f ${{ github.event.inputs.manifest_name }}
