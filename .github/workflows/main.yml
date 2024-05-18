@@ -69,5 +69,5 @@ jobs:
           IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ github.event.inputs.ecr_name }}:${{ github.event.inputs.docker_hub_tag }}
         run: |
           kubectl apply -f components.yaml
-          sh "sed -i 's+308294614673.dkr.ecr.us-east-1.amazonaws.com/${{ github.event.inputs.ecr_name }}:.*+308294614673.dkr.ecr.us-east-1.amazonaws.com/${{ github.event.inputs.ecr_name }}:${{ github.event.inputs.docker_hub_tag }}+g' /${{ github.event.inputs.manifest_name }}/dep-api.yaml"
+          sed -i 's+308294614673.dkr.ecr.us-east-1.amazonaws.com/${{ github.event.inputs.ecr_name }}:.*+308294614673.dkr.ecr.us-east-1.amazonaws.com/${{ github.event.inputs.ecr_name }}:${{ github.event.inputs.docker_hub_tag }}+g' ./${{ github.event.inputs.manifest_name }}/dep-api.yaml
           kubectl apply -f ${{ github.event.inputs.manifest_name }}
