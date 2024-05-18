@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dep-api
+  name: dep-api-pagamento
   labels:
-    app: dep-api
+    app: dep-api-pagamento
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dep-api
+      app: dep-api-pagamento
   template:
     metadata:
       labels:
-        app: dep-api
+        app: dep-api-pagamento
     spec:
       containers:
-      - name: dep-api-container
-        image: 308294614673.dkr.ecr.us-east-1.amazonaws.com/pedido:latest
+      - name: dep-api-pagamento-container
+        image: 308294614673.dkr.ecr.us-east-1.amazonaws.com/pagamento:latest
         resources:
           requests:
             cpu: 10m
@@ -26,55 +26,55 @@ spec:
         - name: MARIADB_HOST
           valueFrom:
             secretKeyRef:
-              name: db-secrets-api
+              name: db-secrets-api-pagamento
               key: MARIADB_HOST
               optional: false
         - name: MARIADB_USER
           valueFrom:
             secretKeyRef:
-              name: db-secrets-api
+              name: db-secrets-api-pagamento
               key: MARIADB_USER
               optional: false
         - name: MARIADB_PASS
           valueFrom:
             secretKeyRef:
-              name: db-secrets-api
+              name: db-secrets-api-pagamento
               key: MARIADB_PASS
               optional: false
         - name: MARIADB_DATABASE
           valueFrom:
             secretKeyRef:
-              name: db-secrets-api
+              name: db-secrets-api-pagamento
               key: MARIADB_DATABASE
               optional: false
         - name: MARIADB_PORT
           valueFrom:
             secretKeyRef:
-              name: db-secrets-api
+              name: db-secrets-api-pagamento
               key: MARIADB_PORT
               optional: false
         - name: MP_URL
           valueFrom:
             secretKeyRef:
-              name: db-secrets-api
+              name: db-secrets-api-pagamento
               key: MP_URL
               optional: false
         - name: MP_NOTIFICATION_URL
           valueFrom:
             secretKeyRef:
-              name: db-secrets-api
+              name: db-secrets-api-pagamento
               key: MP_NOTIFICATION_URL
               optional: false
         - name: MP_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: db-secrets-api
+              name: db-secrets-api-pagamento
               key: MP_CLIENT_ID
               optional: false
         - name: MP_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: db-secrets-api
+              name: db-secrets-api-pagamento
               key: MP_CLIENT_SECRET
               optional: false
         livenessProbe:
