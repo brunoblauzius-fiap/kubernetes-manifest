@@ -23,35 +23,17 @@ spec:
         ports:
         - containerPort: 3000
         env:
-        - name: MARIADB_HOST
+        - name: DB_MONGO
           valueFrom:
             secretKeyRef:
               name: db-secrets-api-pagamento
-              key: MARIADB_HOST
+              key: DB_MONGO
               optional: false
-        - name: MARIADB_USER
+        - name: PORT
           valueFrom:
             secretKeyRef:
               name: db-secrets-api-pagamento
-              key: MARIADB_USER
-              optional: false
-        - name: MARIADB_PASS
-          valueFrom:
-            secretKeyRef:
-              name: db-secrets-api-pagamento
-              key: MARIADB_PASS
-              optional: false
-        - name: MARIADB_DATABASE
-          valueFrom:
-            secretKeyRef:
-              name: db-secrets-api-pagamento
-              key: MARIADB_DATABASE
-              optional: false
-        - name: MARIADB_PORT
-          valueFrom:
-            secretKeyRef:
-              name: db-secrets-api-pagamento
-              key: MARIADB_PORT
+              key: PORT
               optional: false
         - name: MP_URL
           valueFrom:
