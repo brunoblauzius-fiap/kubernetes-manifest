@@ -59,6 +59,54 @@ spec:
               name: db-secrets-api-pagamento
               key: MP_CLIENT_SECRET
               optional: false
+        - name: AWS_SQS_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api-pagamento
+              key: AWS_SQS_URL
+              optional: false
+        - name: AWS_SQS_PEDIDO_PAGAMENTO
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api-pagamento
+              key: AWS_SQS_PEDIDO_PAGAMENTO
+              optional: false
+        - name: AWS_SQS_CONFIRMACAO_PAGAMENTO
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api-pagamento
+              key: AWS_SQS_CONFIRMACAO_PAGAMENTO
+              optional: false
+        - name: AWS_SQS_CANCELAR_PEDIDO
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api-pagamento
+              key: AWS_SQS_CANCELAR_PEDIDO
+              optional: false
+        - name: AWS_SQS_PEDIDO_ENTREGA
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api-pagamento
+              key: AWS_SQS_PEDIDO_ENTREGA
+              optional: false
+        - name: AWS_SQS_PEDIDO_ENTREGA_CANCELAR
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api-pagamento
+              key: AWS_SQS_PEDIDO_ENTREGA_CANCELAR
+              optional: false
+        - name: AWS_SQS_PEDIDO_FINALIZADO
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api-pagamento
+              key: AWS_SQS_PEDIDO_FINALIZADO
+              optional: false
+        - name: DEBUG
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api-pagamento
+              key: DEBUG
+              optional: false
         livenessProbe:
           httpGet:
             path: /
