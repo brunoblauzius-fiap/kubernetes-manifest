@@ -120,6 +120,18 @@ spec:
               name: db-secrets-api
               key: AWS_SQS_PEDIDO_FINALIZADO
               optional: false
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: AWS_ACCESS_KEY_ID
+              optional: false
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets-api
+              key: AWS_SECRET_ACCESS_KEY
+              optional: false
         - name: DEBUG
           valueFrom:
             secretKeyRef:
